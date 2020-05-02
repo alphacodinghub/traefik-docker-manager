@@ -1,0 +1,6 @@
+http:
+  middlewares:
+    auth:
+      basicAuth:
+        users: #admin/password
+          - admin:{SHA}W6ph5Mm5Pz8GgiULbPgzG37mj9g=
