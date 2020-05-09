@@ -5,6 +5,8 @@
 ![](https://img.shields.io/badge/platform-Docker-lightgrey.svg)[![](https://img.shields.io/badge/Traefik-v2.x-blue.svg)](https://containo.us/traefik/)
 ![](https://img.shields.io/badge/license-MIT-000000.svg)
 
+**This project aims to set up a production environment on a VPS for you to easily deploy and manage /monitor Docker applications.**
+
 ## Assumptions
 
 - You have a VPS with Docker Engine and docker-compose and git installed.
