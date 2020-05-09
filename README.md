@@ -48,6 +48,8 @@ ACME_EMAIL=alphacodinghub@example.com
 
 ACME_EMAIL is your email address which is used by Let's Encrypt to generate and renew SSL certificates.
 
+To set the basic auth info, edit the file `middlewares.yml` (located in `./config/traefik/config`). The default `user/password` is set to `admin/password`.
+
 ## Run the project
 
 On your VPS, you just need to clone this project to a folder, say `/app`; create your `.env` file; run the project:
