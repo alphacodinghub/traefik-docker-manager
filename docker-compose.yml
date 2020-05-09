@@ -113,7 +113,6 @@ services:
   ####         an example - cats        #####
   ##############################################
   cats-demo:
-    # https://hub.docker.com/r/dehy/adminer
     image: mikesir87/cats
     container_name: cats
     restart: always
