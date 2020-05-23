@@ -62,6 +62,8 @@ On your VPS, you just need to clone this project to a folder, say `/app`; create
 - cp .env_template .env
 - vim .env
 - # set your APP_DOMAIN and ACMS_EMAIL, and save and quit the .env file
+- docker network create web
+- docker network create backend
 - docker-compose up -d
 ```
 
