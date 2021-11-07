@@ -130,3 +130,67 @@ networks:
     external: true
   backend:
     external: true
+    
+    
+    #############
+    ####Guac
+    #############
+  guacd:
+    image: guacamole/guacd
+    networks:
+      - web
+    container_name: guacd
+    hostname: guacd
+    restart: unless-stopped
+    volumes:
+      - /volume1/docker/guacamole/guacd/drive:/drive:rw
+      - /volume1/docker/guacamole/guacd/record:/record:rw
+
+
+  guacamole:
+    image: guacamole/guacamole
+    container_name: guacamole
+    hostname: guacamole
+    restart: unless-stopped
+    networks:
+      - web
+    depends_on:
+      - guacd
+      - guacamole-db
+    environment:
+      GUACD_HOSTNAME: guacd
+      MYSQL_HOSTNAME: guacamole-db
+      MYSQL_DATABASE: guacamole_db
+      MYSQL_USER: guacamole_user
+      MYSQL_PASSWORD: tmpPassword
+      #TOTP_ENABLED: 'true'
+    links:
+      - guacd
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.guacamole.rule=Host(`guacamole.${APP_DOMAIN}`)'
+      - 'traefik.http.routers.guacamole.entrypoints=web-secure'
+      - 'traefik.http.routers.guacamole.tls=true'
+      - "traefik.http.routers.guacamole.tls.certresolver=certificato"
+      - "traefik.http.routers.guacamole.tls.domains[0].main=*.${APP_DOMAIN}"
+      #- "traefik.http.routers.guacamole.tls.options=myTLSOptions@file"
+      - "traefik.http.routers.guacamole.service=guacamoleService"
+      - "traefik.http.routers.guacamole.middlewares=guacamoleMdl"
+      - "traefik.http.middlewares.guacamoleMdl.addprefix.prefix=/guacamole"
+      - "traefik.http.services.guacamoleService.loadBalancer.server.port=8080"
+
+
+  guacamole-db:
+    image: mysql/mysql-server
+    container_name: guacamole-db
+    hostname: guacamole-db
+    networks:
+      - web
+    environment:
+      MYSQL_USER: guacamole_user
+      MYSQL_PASSWORD: ${GUACAMOLE_PASSWORD}
+      MYSQL_DATABASE: guacamole_db
+    restart: unless-stopped
+    volumes:
+      - ./initdb.sql:/initdb.sql				#DB configuration file
+      - /volume1/docker/guacamole/database:/var/lib/mysql/:rw
